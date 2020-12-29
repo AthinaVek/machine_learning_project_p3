@@ -121,7 +121,7 @@ vector<distanceNode> actual_nearest_neighbor(vector<unsigned char>  qVec, vector
 }
 
 
-vector<distanceNode> actual_nearest_neighbor2(vector<unsigned short>  qVec, vector< vector< unsigned short> > pVec, int d, int N){
+vector<distanceNode> actual_nearest_neighbor2(vector<unsigned short> qVec, vector< vector< unsigned short> > pVec, int d, int N){
 	unsigned int temp;							
 	distanceNode node;
 	vector<distanceNode> distances;
@@ -134,6 +134,15 @@ vector<distanceNode> actual_nearest_neighbor2(vector<unsigned short>  qVec, vect
 			
 	for( int j = 0; j < pVec.size(); j++){
 		temp = manhattan_dist2(qVec, pVec[j], d);
+		// cout << endl <<  "QQQQQQQQQQQQQQQQ" << endl;
+		// for(int u=0; u<d; u++){
+		// 	cout << qVec[u] << " , " <<  endl;
+		// }
+		// cout << endl << "PPPPPPPPPPPPPPPP" << endl;
+		// for(int u=0; u<d; u++){
+		// 	cout << pVec[j][u] << " , " <<  endl;
+		// }
+		// cout << "----------------------------" << temp << endl;
 		if(temp < distances[N-1].dist){
 			
 			distances[N-1].dist = temp;

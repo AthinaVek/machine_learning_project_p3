@@ -16,8 +16,10 @@ int main(int argc, char** argv){
 	int magic_number=0, number_of_images=0;
     int n_rows=0, n_cols=0, n_rows2=0, n_cols2=0;
     int d, d2, M, h, pos;
-    unsigned int g;
+    unsigned int g, rDist;
     int hTableSize, probes;
+    long long lshSum=0, trueSum=0, redSum=0;
+    double approximationLsh, approximationReduced;
 
 	vector< vector<unsigned char> > pVec, qVec;
 	vector<unsigned char> tempVec;
@@ -37,7 +39,7 @@ int main(int argc, char** argv){
         read_data(file, &magic_number, &number_of_images, &n_rows, &n_cols, pVec, tempVec);
         d = n_rows * n_cols;						           // dimension
 
-        read_data2(file2, &magic_number, &number_of_images, &n_rows, &n_cols, pVec2, tempVec2);
+        read_data2(file2, &magic_number, &number_of_images, &n_rows2, &n_cols2, pVec2, tempVec2);
 		d2 = n_rows2 * n_cols2;						           // dimension
 
         hTableSize = number_of_images / NForTable;
@@ -94,14 +96,22 @@ int main(int argc, char** argv){
 						ofile << "distanceReduced: " << distTrue2[j].dist << endl;
 						ofile << "distanceLSH: " << distLsh[j].dist << endl;
 						ofile << "distanceTrue: " << distTrue[j].dist << endl;
+
+						lshSum += distLsh[j].dist;
+						trueSum += distTrue[j].dist;
+
+						rDist = manhattan_dist(qVec[i], pVec[distTrue2[j].pPos], d);
+						redSum += rDist;
 					}
 					ofile << "tReduced: " << durationTrue2 << endl;
 					ofile << "tLSH: " << durationLsh << endl;
 					ofile << "tTrue: " << durationTrue << endl;
-
-					ofile << "Approximation Factor LSH: " << endl;
-					ofile << "Approximation Factor Reduced: " << endl;
 				}
+				approximationLsh = (lshSum/number_of_images) / (trueSum/number_of_images);
+				approximationReduced = (redSum/number_of_images) / (trueSum/number_of_images);
+
+				ofile << "Approximation Factor LSH: " << approximationLsh << endl;
+				ofile << "Approximation Factor Reduced: " << approximationReduced << endl;
 			}
 		}
 		else{

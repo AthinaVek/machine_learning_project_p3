@@ -104,14 +104,11 @@ void read_data2(ifstream &file, int* magic_number, int* number_of_images, int* n
 
 				file.read(reinterpret_cast<char*>(&hi), 1);
 				file.read(reinterpret_cast<char*>(&lo), 1);
-
 				temp = (hi << 8) | lo;
 
-				cout << temp << endl;
 				tempVec.push_back(temp);
 			}
 		}
-		cout << endl << "-----------------" << endl;
 		vec.push_back(tempVec);                           // save vector of pixels for every image
 		tempVec.erase(tempVec.begin(), tempVec.end());
 	}
