@@ -52,7 +52,7 @@ void read_inputLSH(int* argc, char** argv, string* iFile, string* iFile2, string
 		*oFile = "results.txt";
 		
 		*k = 4;				
-		*L = 5;
+		*L = 3;
 	}
 }
 

@@ -90,17 +90,16 @@ int main(int argc, char** argv){
 
 					ofile  << "Query: " << i << endl;               // write to file
 					for (int j=0; j<N; j++){
+						rDist = manhattan_dist(qVec[i], pVec[distTrue2[j].pPos], d);
 						ofile << "Nearest neighbor Reduced: " << distTrue2[j].pPos << endl;
 						ofile << "Nearest neighbor LSH: " << distLsh[j].pPos << endl;
 						ofile << "Nearest neighbor True: " << distTrue[j].pPos << endl;
-						ofile << "distanceReduced: " << distTrue2[j].dist << endl;
+						ofile << "distanceReduced: " << rDist << endl;
 						ofile << "distanceLSH: " << distLsh[j].dist << endl;
 						ofile << "distanceTrue: " << distTrue[j].dist << endl;
 
 						lshSum += distLsh[j].dist;
 						trueSum += distTrue[j].dist;
-
-						rDist = manhattan_dist(qVec[i], pVec[distTrue2[j].pPos], d);
 						redSum += rDist;
 					}
 					ofile << "tReduced: " << durationTrue2 << endl;
