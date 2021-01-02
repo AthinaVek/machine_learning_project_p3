@@ -106,8 +106,8 @@ int main(int argc, char** argv){
 					ofile << "tLSH: " << durationLsh << endl;
 					ofile << "tTrue: " << durationTrue << endl;
 				}
-				approximationLsh = (lshSum/number_of_images) / (trueSum/number_of_images);
-				approximationReduced = (redSum/number_of_images) / (trueSum/number_of_images);
+				approximationLsh = (double)(lshSum/number_of_images) / (double)(trueSum/number_of_images);
+				approximationReduced = (double)(redSum/number_of_images) / (double)(trueSum/number_of_images);
 
 				ofile << "Approximation Factor LSH: " << approximationLsh << endl;
 				ofile << "Approximation Factor Reduced: " << approximationReduced << endl;
