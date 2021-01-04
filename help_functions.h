@@ -22,12 +22,14 @@ void read_data(ifstream &file, int* magic_number, int* number_of_images, int* n_
 void read_data2(ifstream &file, int* magic_number, int* number_of_images, int* n_rows, int* n_cols, vector< vector<unsigned short> >& pVec, vector<unsigned short>& tempVec);
 
 void read_inputLSH(int* argc, char** argv, string* iFile, string* iFile2, string* qFile, string* qFile2, int* k, int* L, string* oFile);
-void read_inputCube(int* argc, char** argv, string* iFile, string* qFile, int* k, int* M, int* probes, string* oFile, int* N, double* R, double* w);
-void read_inputCluster(int* argc, char** argv, string* iFile, string* confFile, string* oFile, string* method);
+void read_inputCluster(int* argc, char** argv, string* iFile, string* iFile2, string* classes, string* confFile, string* oFile);
 
-void read_confFile(int* K, int* L, int* kl, int* M, int* ky, int* probes, string confFile);
+void read_confFile(int* K, int* L, int* kl, string confFile);
 
 void quicksort(vector<unsigned char> &values, int left, int right);
 int partition(vector<unsigned char> &values, int left, int right);
+
+void quicksort2(vector<unsigned short> &values, int left, int right);
+int partition2(vector<unsigned short> &values, int left, int right);
 
 #endif

@@ -21,7 +21,7 @@ import sys
 from sklearn.metrics import classification_report
 
 
-def MnistDataSaverForImages(images, images_output_filepath):			# read images and labels from datasets
+def MnistDataSaverForImages(images, images_output_filepath):			# save images datasets 2 byte
 	magic = 2051
 	size = len(images)
 	rows = 1

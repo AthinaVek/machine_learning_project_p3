@@ -45,6 +45,7 @@ vector<int> get_s(double w, int d);
 vector<int> calculate_a(vector<unsigned char> pVec, vector<int> sVec, double w, int d);
 int calculate_h(vector<int> aVec, int m, int M, int d);
 unsigned int manhattan_dist(vector<unsigned char> qVec, vector<unsigned char> pVec, int d);
+unsigned int manhattan_dist2(vector<unsigned short> qVec, vector<unsigned short> pVec, int d);
 
 vector<distanceNode> actual_nearest_neighbor(vector<unsigned char>  qVec, vector< vector< unsigned char> > pVec, int d, int N);
 vector<distanceNode> actual_nearest_neighbor2(vector<unsigned short>  qVec, vector< vector< unsigned short> > pVec, int d, int N);

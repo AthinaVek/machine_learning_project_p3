@@ -115,84 +115,39 @@ void read_data2(ifstream &file, int* magic_number, int* number_of_images, int* n
 }
 
 
-void read_inputCube(int* argc, char** argv, string* iFile, string* qFile, int* k, int* M, int* probes, string* oFile, int* N, double* R, double* w){
-	if(*argc == 17){                                          // Read input
-		for (int i = 1; i < 16; ++i){
+void read_inputCluster(int* argc, char** argv, string* iFile, string* iFile2, string* classes, string* confFile, string* oFile){
+	if(*argc == 11){                                          // Read input
+		for (int i = 1; i < 8; ++i){
 			if (string(argv[i]) == "-d"){
 				*iFile = argv[i+1];
 			}
-			else if (string(argv[i]) == "-q"){
-				*qFile = argv[i+1];
+			else if (string(argv[i]) == "-i"){
+				*iFile2 = argv[i+1];
 			}
-			else if (string(argv[i]) == "-k"){
-				*k = atoi(argv[i+1]);
+			else if (string(argv[i]) == "-n"){
+				*classes = argv[i+1];
 			}
-			else if (string(argv[i]) == "-M"){
-				*M = atoi(argv[i+1]);
-			}
-			else if (string(argv[i]) == "-probes"){
-				*probes = atoi(argv[i+1]);
+			else if (string(argv[i]) == "-c"){
+				*confFile = argv[i+1];
 			}
 			else if (string(argv[i]) == "-o"){
 				*oFile = argv[i+1];
 			}
-			else if (string(argv[i]) == "-N"){
-				*N = atoi(argv[i+1]);
-			}
-			else if (string(argv[i]) == "-R"){
-				*R = atof(argv[i+1]);
-			}
 		}
 	}
 	else{
-		cout << "No right input given. Using default values." << endl << endl;
+		cout << "No right input given. Using default values." << endl;
 
 		*iFile = "train-images-idx3-ubyte";                   //default values if not given by user
-		*qFile = "t10k-images-idx3-ubyte";
-		*oFile = "results_cube.txt";
-		
-		*k = 14;				
-		*M = 10;
-		*probes = 2;
-		*N = 1;
-		*R = 10000;
+		*iFile2 = "train-images-idx1-ushort";
+		*classes = "classification_results";
+		*confFile = "cluster.conf";
+		*oFile = "results_cluster.txt";
 	}
-	*w = 4 * (*R);
 }
 
 
-// void read_inputCluster(int* argc, char** argv, string* iFile, string* confFile, string* oFile, string* method){
-// 	if(*argc == 11){                                          // Read input
-// 		for (int i = 1; i < 8; ++i){
-// 			if (string(argv[i]) == "-d"){
-// 				*iFile = argv[i+1];
-// 			}
-// 			else if (string(argv[i]) == "-i"){
-// 				*iFile2 = argv[i+1];
-// 			}
-// 			else if (string(argv[i]) == "-n"){
-// 				*classes = argv[i+1];
-// 			}
-// 			else if (string(argv[i]) == "-c"){
-// 				*confFile = argv[i+1];
-// 			}
-// 			else if (string(argv[i]) == "-o"){
-// 				*oFile = argv[i+1];
-// 			}
-// 		}
-// 	}
-// 	else{
-// 		cout << "No right input given. Using default values." << endl;
-
-// 		*iFile = "train-images-idx3-ubyte";                   //default values if not given by user
-// 		*iFile = "train-images-idx1-ushort";
-// 		*confFile = "cluster.conf";
-// 		*oFile = "results_cluster.txt";
-// 	}
-// }
-
-
-void read_confFile(int* K, int* L, int* kl, int* M, int* ky, int* probes, string confFile){
+void read_confFile(int* K, int* L, int* kl, string confFile){
 	string line;
 	ifstream MyReadFile(confFile);
 	vector<string> results;
@@ -206,9 +161,6 @@ void read_confFile(int* K, int* L, int* kl, int* M, int* ky, int* probes, string
 	*K = stoi(results[0]);
 	*L = stoi(results[1]);
 	*kl = stoi(results[2]);
-	*M = stoi(results[3]);
-	*ky = stoi(results[4]);
-	*probes = stoi(results[5]);
 }
 
 
@@ -245,9 +197,34 @@ void quicksort(vector<unsigned char> &values, int left, int right) {
 }
 
 
+int partition2(vector<unsigned short> &values, int left, int right) {
+    int pivotIndex = left + (right - left) / 2;
+    int pivotValue = (int)values[pivotIndex];
+    int i = left, j = right;
+    unsigned short temp;
+    while(i <= j) {
+        while((int)values[i] < pivotValue) {
+            i++;
+        }
+        while((int)values[j] > pivotValue) {
+            j--;
+        }
+        if(i <= j) {
+            temp = values[i];
+            values[i] = values[j];
+            values[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    return i;
+}
 
 
-
-
-
-
+void quicksort2(vector<unsigned short> &values, int left, int right) {
+    if(left < right) {
+        int pivotIndex = partition2(values, left, right);
+        quicksort2(values, left, pivotIndex - 1);
+        quicksort2(values, pivotIndex, right);
+    }
+}
