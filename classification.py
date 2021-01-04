@@ -146,24 +146,32 @@ if __name__ == "__main__":
 				predicted_classes = np.argmax(np.round(predicted_classes), axis=1)
 
 				print_correct_incorrect(predicted_classes, x_test, y_test)							# print correct and incorrect images
+
+				clusters = [[] for i in range(10)]
+				for i in range(len(x_test)):
+					clusters[predicted_classes[i]].append(i)
+
+				f = open("classification_results", "w")
+				for i in range(len(clusters)):
+					f.write("CLUSTER-" + str(i) + " { size: " + str(len(clusters[i])))
+					for im in clusters[i]:
+						f.write(", " + str(im))
+					f.write("\n")
+				f.close()
+				
 				break
 
 		elif (val == 3):
 			predicted_classes = encoder_model.predict(x_test)
 			predicted_classes = np.argmax(np.round(predicted_classes), axis=1)	
 
-			# print_correct_incorrect(predicted_classes, x_test, y_test)								# print correct and incorrect images
+			print_correct_incorrect(predicted_classes, x_test, y_test)								# print correct and incorrect images
 
 			clusters = [[] for i in range(10)]
-
 			for i in range(len(x_test)):
-				# print (predicted_classes[i])
 				clusters[predicted_classes[i]].append(i)
 
-			print (clusters)
-
 			f = open("classification_results", "w")
-
 			for i in range(len(clusters)):
 				f.write("CLUSTER-" + str(i) + " { size: " + str(len(clusters[i])))
 				for im in clusters[i]:
