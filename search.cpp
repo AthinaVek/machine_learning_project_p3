@@ -2,9 +2,9 @@
 #include "calculations.h"
 #include "calculations_lsh.h"
 
-#define w 400
+#define w 40000
 #define N 1
-#define m 107					//a_max < m < M/2
+// #define m 107					//a_max < m < M/2
 #define NForTable 16
 
 using namespace std;
@@ -15,7 +15,7 @@ int main(int argc, char** argv){
 	int i, k, L;
 	int magic_number=0, number_of_images=0;
     int n_rows=0, n_cols=0, n_rows2=0, n_cols2=0;
-    int d, d2, M, h, pos;
+    int d, d2, M, m, h, pos;
     unsigned int g, rDist;
     int hTableSize, probes;
     long long lshSum=0, trueSum=0, redSum=0;
@@ -32,6 +32,7 @@ int main(int argc, char** argv){
 	read_inputLSH(&argc, argv, &iFile, &iFile2, &qFile, &qFile2, &k, &L, &oFile);
 
 	M = pow(2,floor(32/k));
+	m = (M/2) -1;
 	
 	ifstream file (iFile);
 	ifstream file2 (iFile2);
@@ -63,6 +64,7 @@ int main(int argc, char** argv){
 					tempIntVec.erase(tempIntVec.begin(), tempIntVec.end());
 				}
 
+				int countLsh = 0;
 				for(int i = 0; i < number_of_images; i++){
 					for (int j = 0; j < k; j++){
 						aVec = calculate_a(qVec[i], sVec[j], w, d);  // calculate a for every image
@@ -98,7 +100,10 @@ int main(int argc, char** argv){
 						ofile << "distanceLSH: " << distLsh[j].dist << endl;
 						ofile << "distanceTrue: " << distTrue[j].dist << endl;
 
-						lshSum += distLsh[j].dist;
+						if (distLsh[j].pPos != -1){
+							lshSum += distLsh[j].dist;
+							countLsh++;
+						}
 						trueSum += distTrue[j].dist;
 						redSum += rDist;
 					}
@@ -106,7 +111,8 @@ int main(int argc, char** argv){
 					ofile << "tLSH: " << durationLsh << endl;
 					ofile << "tTrue: " << durationTrue << endl;
 				}
-				approximationLsh = (double)(lshSum/number_of_images) / (double)(trueSum/number_of_images);
+				cout << countLsh << endl;
+				approximationLsh = (double)(lshSum/countLsh) / (double)(trueSum/number_of_images);
 				approximationReduced = (double)(redSum/number_of_images) / (double)(trueSum/number_of_images);
 
 				ofile << "Approximation Factor LSH: " << approximationLsh << endl;

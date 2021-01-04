@@ -161,35 +161,35 @@ void read_inputCube(int* argc, char** argv, string* iFile, string* qFile, int* k
 }
 
 
-void read_inputCluster(int* argc, char** argv, string* iFile, string* confFile, string* oFile, string* method){
-	if(*argc == 11){                                          // Read input
-		for (int i = 1; i < 8; ++i){
-			if (string(argv[i]) == "-d"){
-				*iFile = argv[i+1];
-			}
-			else if (string(argv[i]) == "-i"){
-				*iFile2 = argv[i+1];
-			}
-			else if (string(argv[i]) == "-n"){
-				*classes = argv[i+1];
-			}
-			else if (string(argv[i]) == "-c"){
-				*confFile = argv[i+1];
-			}
-			else if (string(argv[i]) == "-o"){
-				*oFile = argv[i+1];
-			}
-		}
-	}
-	else{
-		cout << "No right input given. Using default values." << endl;
+// void read_inputCluster(int* argc, char** argv, string* iFile, string* confFile, string* oFile, string* method){
+// 	if(*argc == 11){                                          // Read input
+// 		for (int i = 1; i < 8; ++i){
+// 			if (string(argv[i]) == "-d"){
+// 				*iFile = argv[i+1];
+// 			}
+// 			else if (string(argv[i]) == "-i"){
+// 				*iFile2 = argv[i+1];
+// 			}
+// 			else if (string(argv[i]) == "-n"){
+// 				*classes = argv[i+1];
+// 			}
+// 			else if (string(argv[i]) == "-c"){
+// 				*confFile = argv[i+1];
+// 			}
+// 			else if (string(argv[i]) == "-o"){
+// 				*oFile = argv[i+1];
+// 			}
+// 		}
+// 	}
+// 	else{
+// 		cout << "No right input given. Using default values." << endl;
 
-		*iFile = "train-images-idx3-ubyte";                   //default values if not given by user
-		*iFile = "train-images-idx1-ushort";
-		*confFile = "cluster.conf";
-		*oFile = "results_cluster.txt";
-	}
-}
+// 		*iFile = "train-images-idx3-ubyte";                   //default values if not given by user
+// 		*iFile = "train-images-idx1-ushort";
+// 		*confFile = "cluster.conf";
+// 		*oFile = "results_cluster.txt";
+// 	}
+// }
 
 
 void read_confFile(int* K, int* L, int* kl, int* M, int* ky, int* probes, string confFile){

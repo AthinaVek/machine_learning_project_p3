@@ -23,7 +23,7 @@ vector<int> calculate_a(vector<unsigned char> pVec, vector<int> sVec, double w, 
 	float temp;
 	
 	for(int i = 0; i < d; i++){
-		temp = ((float)pVec[i] + w - (float)sVec[i])/w;
+		temp = ((float)pVec[i] - (float)sVec[i])/w;
 		aVec.push_back(floor(temp));
 	}
 	return aVec;
@@ -59,8 +59,8 @@ int calculate_h(vector<int> aVec, int m, int M, int d){
 			
 		x = (temp* modular_pow(m, i, M))%M;
 		
-		// if(x < 0)
-			// x += M;
+		if(x < 0)
+			x += M;
 		
 		h += x;
 		j--;
@@ -134,15 +134,7 @@ vector<distanceNode> actual_nearest_neighbor2(vector<unsigned short> qVec, vecto
 			
 	for( int j = 0; j < pVec.size(); j++){
 		temp = manhattan_dist2(qVec, pVec[j], d);
-		// cout << endl <<  "QQQQQQQQQQQQQQQQ" << endl;
-		// for(int u=0; u<d; u++){
-		// 	cout << qVec[u] << " , " <<  endl;
-		// }
-		// cout << endl << "PPPPPPPPPPPPPPPP" << endl;
-		// for(int u=0; u<d; u++){
-		// 	cout << pVec[j][u] << " , " <<  endl;
-		// }
-		// cout << "----------------------------" << temp << endl;
+
 		if(temp < distances[N-1].dist){
 			
 			distances[N-1].dist = temp;
