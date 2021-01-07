@@ -57,14 +57,28 @@ if __name__ == "__main__":
 	x_train2d = np.reshape(x_train, (len(x_train), 28, 28))
 	x_test2d = np.reshape(x_test, (len(x_test), 28, 28))
 
-	signatures = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_train2d))]
+
+	signatures_train = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_train2d))]
 	i = 0
 	for image in x_train2d:
 		
 		temp = divideToClusters(image, 7, 7)
 		
 		for j in range(16):
-			signatures[i][j][1] = np.sum(temp[j])			# w
-			signatures[i][j][0] = temp[j][3][3]				# p
+			signatures_train[i][j][1] = np.sum(temp[j])				# w
+			signatures_train[i][j][0] = temp[j][3][3]				# p
+
+		i += 1
+
+
+	signatures_test = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_test2d))]
+	i = 0
+	for image in x_test2d:
+		
+		temp = divideToClusters(image, 7, 7)
+		
+		for j in range(16):
+			signatures_test[i][j][1] = np.sum(temp[j])				# w
+			signatures_test[i][j][0] = temp[j][3][3]				# p
 
 		i += 1
