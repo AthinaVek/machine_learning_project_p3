@@ -59,26 +59,33 @@ if __name__ == "__main__":
 
 
 	signatures_train = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_train2d))]
+	sum_train = []
 	i = 0
 	for image in x_train2d:
-		
+		s1 = 0
 		temp = divideToClusters(image, 7, 7)
 		
 		for j in range(16):
 			signatures_train[i][j][1] = np.sum(temp[j])				# w
 			signatures_train[i][j][0] = temp[j][3][3]				# p
+			s1 += signatures_train[i][j][1]
+
+		sum_train.append(s1)
 
 		i += 1
 
-
+	print(sum_train)
 	signatures_test = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_test2d))]
 	i = 0
 	for image in x_test2d:
-		
+		s2 = 0
 		temp = divideToClusters(image, 7, 7)
 		
 		for j in range(16):
 			signatures_test[i][j][1] = np.sum(temp[j])				# w
 			signatures_test[i][j][0] = temp[j][3][3]				# p
+			s2 += signatures_test[i][j][1]
+
+		print("s2 = " + str(s2))
 
 		i += 1
