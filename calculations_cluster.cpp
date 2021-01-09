@@ -262,11 +262,12 @@ vector<distanceNode> approximate_range_search_clusterLSH(vector < vector<unsigne
 
 void silhouette(vector< vector<int> > clusters, vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile){
 	int a, b, min, temp, max;
-	int tempS, minC, sTotal=0, count=0;
+	int minC, count=0;
+	double sTotal=0.0, tempS;
 
 	ofile << "Silhouette: [ ";
 	for (int i=0; i<k; i++){
-		tempS = 0;
+		tempS = 0.0;
 		for (int j=0; j<clusters[i].size(); j++){
 			a = 0;
 			b = 0;
@@ -299,25 +300,44 @@ void silhouette(vector< vector<int> > clusters, vector< vector<unsigned char> > 
 				max = b;
 			}
 			
-			tempS += (b - a)/max;
+			tempS += (double)(b - a)/(double)max;
 			count++;
 		}
-		ofile << tempS/clusters[i].size() << ", ";
-		sTotal += tempS/clusters[i].size();
+		ofile << tempS/(double)clusters[i].size() << ", ";
+		sTotal += tempS/(double)clusters[i].size();
 	}
 
-	sTotal = sTotal/count;
+	sTotal = sTotal/(double)count;
 	ofile << sTotal << "]" << endl;
+}
+
+
+void objective_function(vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile){
+	int min, temp;
+	double objective=0;
+
+	for (int i=0; i<pVec.size(); i++){
+		min = 2147483647;
+		for (int j=0; j<k; j++){
+			temp = (int)manhattan_dist(pVec[i], centroids[j], d);
+			if (temp < min){
+				min = temp;
+			}
+		}
+		objective += (double)min;
+	}
+	ofile << "Value of Objective Function: " << objective << endl;
 }
 
 
 void silhouette2(vector< vector<int> > clusters, vector< vector<unsigned short> > centroids, vector< vector<unsigned short> > pVec, int k, int d, ofstream &ofile){
 	int a, b, min, temp, max;
-	int tempS, minC, sTotal=0, count=0;
+	int minC, count=0;
+	double sTotal=0.0, tempS;
 
 	ofile << "Silhouette: [ ";
 	for (int i=0; i<k; i++){
-		tempS = 0;
+		tempS = 0.0;
 		for (int j=0; j<clusters[i].size(); j++){
 			a = 0;
 			b = 0;
@@ -350,13 +370,15 @@ void silhouette2(vector< vector<int> > clusters, vector< vector<unsigned short> 
 				max = b;
 			}
 
-			tempS += (b - a)/max;
+			tempS += ((double)b - (double)a)/(double)max;
+//			cout << "temps: " << tempS << " prin " << (double)(b - a)/(double)max << endl;
 			count++;
 		}
-		ofile << tempS/clusters[i].size() << ", ";
-		sTotal += tempS/clusters[i].size();
+		ofile << tempS/(double)clusters[i].size() << ", ";
+//		cout << "TOTAL: " << tempS/(double)clusters[i].size() << endl;
+		sTotal += tempS/(double)clusters[i].size();
 	}
 
-	sTotal = sTotal/count;
+	sTotal = sTotal/(double)count;
 	ofile << sTotal << "]" << endl;
 }

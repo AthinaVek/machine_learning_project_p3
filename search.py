@@ -7,15 +7,24 @@ import pandas as pd
 import os
 import sys
 from classification_functions import MnistDataloader
+from scipy.stats import wasserstein_distance
+from sklearn.metrics.pairwise import manhattan_distances
 
-def divideToClusters(arr, nrows, ncols):
 
-    h, w = arr.shape
-    assert h % nrows == 0, "{} rows is not evenly divisble by {}".format(h, nrows)
-    assert w % ncols == 0, "{} cols is not evenly divisble by {}".format(w, ncols)
-    return (arr.reshape(h//nrows, nrows, -1, ncols)
-               .swapaxes(1,2)
-               .reshape(-1, nrows, ncols))
+class Pair:
+	def __init__(self, x, y) -> None:
+		self.index = x
+		self.distance = y
+
+	def __str__(self) -> str:
+		return str(self.index) + " " + str(self.distance)
+
+	def __repr__(self) -> str:
+		return str(self.index) + " " + str(self.distance)
+
+
+def manhattan_distance(p, q):
+    return sum([abs(p[i]-q[i]) for i in range(len(p))])
 
 
 if __name__ == "__main__":
@@ -51,41 +60,44 @@ if __name__ == "__main__":
 	y_train = np.array(ytrain)
 	y_test = np.array(ytest)
 
-	x_train = np.reshape(x_train, (len(x_train), 28, 28, 1))
-	x_test = np.reshape(x_test, (len(x_test), 28, 28, 1))
+	# x_train = np.reshape(x_train, (len(x_train), 28, 28, 1))
+	# x_test = np.reshape(x_test, (len(x_test), 28, 28, 1))
 
-	x_train2d = np.reshape(x_train, (len(x_train), 28, 28))
-	x_test2d = np.reshape(x_test, (len(x_test), 28, 28))
+	# x_train2d = np.reshape(x_train, (len(x_train), 28, 28))
+	# x_test2d = np.reshape(x_test, (len(x_test), 28, 28))
 
+	def f(pair):
+		return pair.distance
 
-	signatures_train = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_train2d))]
-	sum_train = []
-	i = 0
-	for image in x_train2d:
-		s1 = 0
-		temp = divideToClusters(image, 7, 7)
-		
-		for j in range(16):
-			signatures_train[i][j][1] = np.sum(temp[j])				# w
-			signatures_train[i][j][0] = temp[j][3][3]				# p
-			s1 += signatures_train[i][j][1]
+	pVec_emd = []
+	pVec_manhattan = []
+	average_correct_emd = []
+	average_correct_manhattan = []
 
-		sum_train.append(s1)
+	for q in range(len(x_test)):
+		for i in range(len(x_train)):
+			dist_emd = wasserstein_distance(x_test[q], x_train[i])
+			pVec_emd.append(Pair(i, dist_emd))
 
-		i += 1
+			dist_manhattan = manhattan_distance(x_test[q], x_train[i])
+			pVec_manhattan.append(Pair(i, dist_manhattan))
 
-	print(sum_train)
-	signatures_test = [[[0 for k in range(2)] for j in range(16)] for i in range(len(x_test2d))]
-	i = 0
-	for image in x_test2d:
-		s2 = 0
-		temp = divideToClusters(image, 7, 7)
-		
-		for j in range(16):
-			signatures_test[i][j][1] = np.sum(temp[j])				# w
-			signatures_test[i][j][0] = temp[j][3][3]				# p
-			s2 += signatures_test[i][j][1]
+		pVec_emd.sort(key = f)
+		pVec_manhattan.sort(key = f)
 
-		print("s2 = " + str(s2))
+		correct_emd = 0
+		correct_manhattan = 0
+		for j in range(10):
+			if (y_test[q] == y_train[pVec_emd[j].index]):
+				correct_emd += 1
+			if (y_test[q] == y_train[pVec_manhattan[j].index]):
+				correct_manhattan += 1
 
-		i += 1
+		average_correct_emd.append(float(correct_emd)/10)
+		average_correct_manhattan.append(float(pVec_manhattan)/10)
+
+	average_emd = sum(average_correct_emd)
+	average_manhattan = sum(average_correct_manhattan)
+	print (average_emd)
+	print (average_manhattan)
+	

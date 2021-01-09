@@ -32,6 +32,7 @@ void update_centroids_median2(vector< vector<unsigned short> > &centroids, vecto
 vector<distanceNode> approximate_range_search_clusterLSH(vector < vector<unsigned char> > centroids, vector < vector< vector <hTableNode> > > &lHashTables, int L, int pos, int d, double R, int cluster);
 
 void silhouette(vector< vector<int> > clusters, vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile);
+void objective_function(vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile);
 void silhouette2(vector< vector<int> > clusters, vector< vector<unsigned short> > centroids, vector< vector<unsigned short> > pVec, int k, int d, ofstream &ofile);
 
 #endif
