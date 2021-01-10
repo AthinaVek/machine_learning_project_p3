@@ -33,6 +33,5 @@ vector<distanceNode> approximate_range_search_clusterLSH(vector < vector<unsigne
 
 void silhouette(vector< vector<int> > clusters, vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile);
 void objective_function(vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile);
-void silhouette2(vector< vector<int> > clusters, vector< vector<unsigned short> > centroids, vector< vector<unsigned short> > pVec, int k, int d, ofstream &ofile);
 
 #endif

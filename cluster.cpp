@@ -99,7 +99,6 @@ int main(int argc, char** argv) {
         read_data2(file2, &magic_number, &number_of_images, &n_rows2, &n_cols2, pVec2, tempVec2);
         for (int i = 0; i < k; i++) {
             clusters2.push_back(vector<int>());
-            temp.push_back(vector<int>());
         }
 
         d2 = n_rows2 * n_cols2;
