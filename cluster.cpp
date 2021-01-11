@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 
     vector< vector<unsigned char> > pVec, centroids, centroids3, centroids_2_784;
     vector<unsigned char> tempVec, pDim, tempC;
-    vector< vector<int> > clusters, clusters2, clusters3, temp, sVec;
+    vector< vector<int> > clusters, clusters2, clusters3, temp, temp2, sVec;
     vector<int> aVec, tempIntVec, pos;
     vector< vector<distanceNode> > distRange;
     vector<distanceNode> distTemp;
@@ -93,12 +93,14 @@ int main(int argc, char** argv) {
     temp.erase(temp.begin(), temp.end());
     first = 1;
     changes = 6;
+    count = 0;
     
     ifstream file2(iFile2);
     if (file2.is_open()) {
         read_data2(file2, &magic_number, &number_of_images, &n_rows2, &n_cols2, pVec2, tempVec2);
         for (int i = 0; i < k; i++) {
             clusters2.push_back(vector<int>());
+            temp2.push_back(vector<int>());
         }
 
         d2 = n_rows2 * n_cols2;
@@ -112,9 +114,8 @@ int main(int argc, char** argv) {
             cout <<"clustering new space... " << endl;
             
             while ((count < 40) && (changes > 5)) {
-                cout << count << endl;
                 changes = 0;
-                lloyds_assignment2(clusters2, temp, number_of_images, pVec2, centroids2, k, d2, &changes, first);
+                lloyds_assignment2(clusters2, temp2, number_of_images, pVec2, centroids2, k, d2, &changes, first);
                 if (!first) {
                     if (changes <= 5)
                         break;
@@ -136,8 +137,6 @@ int main(int argc, char** argv) {
                 ofile << (int) centroids2[i][d2 - 1] << "]}" << endl;
             }
             ofile << "clustering_time: " << durationLloyds2 << endl;
-
-            
             update_centroids_median(centroids_2_784, pDim, pVec, clusters2, tempC, k, d);
             
             silhouette(clusters2, centroids_2_784, pVec, k, d, ofile);

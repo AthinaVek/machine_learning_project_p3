@@ -188,7 +188,6 @@ void update_centroids_median(vector< vector<unsigned char> > &centroids, vector 
 			for (int i=0; i<clusters[j].size(); i++){					//for every image in the cluster
 				pDim.push_back(pVec[clusters[j][i]][z]);
 			}
-			
 			quicksort(pDim, 0, pDim.size() - 1);
 			
 			cSize = (double)pDim.size();
@@ -262,7 +261,7 @@ vector<distanceNode> approximate_range_search_clusterLSH(vector < vector<unsigne
 
 void silhouette(vector< vector<int> > clusters, vector< vector<unsigned char> > centroids, vector< vector<unsigned char> > pVec, int k, int d, ofstream &ofile){
 	int a, b, min, temp, max;
-	int minC, count=0;
+	int minC;
 	double sTotal=0.0, tempS;
 
 	ofile << "Silhouette: [ ";
@@ -301,13 +300,12 @@ void silhouette(vector< vector<int> > clusters, vector< vector<unsigned char> > 
 			}
 			
 			tempS += (double)(b - a)/(double)max;
-			count++;
 		}
 		ofile << tempS/(double)clusters[i].size() << ", ";
 		sTotal += tempS/(double)clusters[i].size();
 	}
 
-	sTotal = sTotal/(double)count;
+	sTotal = sTotal/(double)k;
 	ofile << sTotal << "]" << endl;
 }
 
